@@ -1,21 +1,21 @@
-require('dotenv').config()
+import dotenv from 'dotenv'
+dotenv.config()
 
-const express = require('express')
+import {profiles} from "./models/model.js"
+
+import express from 'express'
+import jwt from 'jsonwebtoken';
+import redis from 'redis'
+
+
+var rediscl = redis.createClient();
+rediscl.on("connect", () => {
+  console.log("Redis plugged in.");
+});
+
 const app = express()
 
-const jwt = require('jsonwebtoken')
 app.use(express.json())
-
-const posts = [
-    {
-      username: 'Kyle',
-      title: 'Post 1'
-    },
-    {
-      username: 'Jim',
-      title: 'Post 2'
-    }
-  ]
 
 
 const authenticateToken = (req, res, next) => {
@@ -26,6 +26,7 @@ const authenticateToken = (req, res, next) => {
       return res.sendStatus(401)
   
     jwt.verify(token, process.env.SECRET_ACCESS_TOKEN, (err, user) => {
+      console.log('[authenticate] user is ', user)
       if (err)
         return res.sendStatus(403)
       req.user = user
@@ -34,9 +35,7 @@ const authenticateToken = (req, res, next) => {
   }
   
 app.get('/posts', authenticateToken, (req, res) => {
-  res.json(posts.filter(post => post.username === req.user.name))
+  res.json(profiles.filter(profile => profile.username === req.user.name))
 })
-
-
 
 app.listen(3000)
