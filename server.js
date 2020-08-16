@@ -1,19 +1,19 @@
-require('dotenv').config()
+import dotenv from 'dotenv'
+dotenv.config()
 
-import {profiles} from "models/model"
+import {profiles} from "./models/model.js"
 
-console.log(profiles)
-// TO DO : require should be replaced import | kimkihyuk
-const redis = require("redis");
+import express from 'express'
+import jwt from 'jsonwebtoken';
+import redis from 'redis'
+
+
 var rediscl = redis.createClient();
-
 rediscl.on("connect", () => {
   console.log("Redis plugged in.");
 });
 
-const express = require('express')
 const app = express()
-const jwt = require('jsonwebtoken')
 
 app.use(express.json())
 
