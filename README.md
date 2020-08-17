@@ -1,6 +1,6 @@
 # auth-server
 
-JWT 기반 인증서버
+프로젝트에 사용하는 모든 인증을 대신해주는 JWT 기반 인증서버.
 
 
 ## install
