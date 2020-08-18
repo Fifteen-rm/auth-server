@@ -1,8 +1,7 @@
 import dotenv from 'dotenv'
 dotenv.config()
 
-import {profiles} from "./models/model.js"
-
+import {profiles} from './models/model.js'
 import express from 'express'
 import jwt from 'jsonwebtoken';
 import redis from 'redis'
@@ -38,4 +37,4 @@ app.get('/posts', authenticateToken, (req, res) => {
   res.json(profiles.filter(profile => profile.username === req.user.name))
 })
 
-app.listen(3000)
+app.listen(4001)

@@ -1,4 +1,4 @@
-GET http://localhost:3000/posts
+GET http://localhost:4001/posts
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdCIsImlhdCI6MTU5NzYwMDY4MSwiZXhwIjoxNTk3NjQzODgxfQ.Z3GjEyVfCcrcV-gU8n6BynPUn9g4d34r9hY8CmCvUiM
 ###
 
