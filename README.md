@@ -2,6 +2,11 @@
 
 프로젝트에 사용하는 모든 인증을 대신해주는 JWT 기반 인증서버.
 
+## 개발 환경
+개발환경은 본인 편한대로 설정. 
+* Windows (node)
+* Ubuntu (redis)
+* Vscode
 
 ## install
 node version : v12.18.3
@@ -9,7 +14,6 @@ node version : v12.18.3
 ```
 npm install
 ```
-
 
 ## Redis
 
