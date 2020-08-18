@@ -19,4 +19,15 @@ docker run -d -p 6379:6379 --name redis redis
 
 
 ## dotenv
-노션 참고
+https://www.notion.so/d2b21f96934649a082639482b5c0a731 에서 다운로드받아서 루트 디렉토리아래에 위치
+
+
+## runserver
+
+run server.js :  npm run dev
+
+run authServer.js :  npn run devAuth  
+
+
+## Test
+requests.rest 활용
