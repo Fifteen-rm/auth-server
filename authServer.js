@@ -6,16 +6,32 @@ dotenv.config()
 import express from 'express'
 import jwt from 'jsonwebtoken';
 import redis from 'redis'
+import { nextTick } from 'process'
 
 const app = express()
+
+
 var rediscl = redis.createClient();
+
 rediscl.on("connect",  () => {
-    console.log("Redis plugged in.");
+  console.log("Redis plugged in.");
 });
 
+const hitAsync = promisify(rediscl.incr).bind(rediscl);
+const getAsync = promisify(rediscl.get).bind(rediscl);
 app.use(express.json())
- 
-const getAsync = promisify(rediscl.get).bind(rediscl)
+
+
+app.get('/', async (req, res) => {
+  let num = -1
+  try {
+    await hitAsync('hits')
+    num = await getAsync('hits')
+  } catch (err) {
+    console.log(err)
+  }
+  res.send(`redis server hit ${num} times`);
+});
 
 
 app.post('/token', async function(req, res) {
@@ -75,4 +91,6 @@ const generateAccessToken = (user) => {
   return jwt.sign(user, process.env.SECRET_ACCESS_TOKEN, { expiresIn: '12h' })
 }
 
-app.listen("0.0.0.0", 8080)
+var server = app.listen(8080, () => {
+  console.log("Server started")
+})
