@@ -9,14 +9,14 @@ import redis from 'redis'
 
 const app = express()
 
-
 var rediscl = redis.createClient({
-  host: 'redis-server',
+  host: process.env.PROD_ENV === undefined ? '0.0.0.0' : 'redis-server',
   port: 6379
 })
 
 rediscl.on("connect",  () => {
   console.log("Redis plugged in.");
+  console.log(process.env.PROD_ENV)
 });
 
 const hitAsync = promisify(rediscl.incr).bind(rediscl);
