@@ -105,7 +105,6 @@ app.get('/authenticate', (req, res) => {
       return res.sendStatus(403);
     }
   })
-  return res.sendStatus(200);
 })
 
 
