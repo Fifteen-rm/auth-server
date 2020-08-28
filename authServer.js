@@ -75,4 +75,4 @@ const generateAccessToken = (user) => {
   return jwt.sign(user, process.env.SECRET_ACCESS_TOKEN, { expiresIn: '12h' })
 }
 
-app.listen(4000)
+app.listen("0.0.0.0", 8080)
