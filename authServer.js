@@ -6,12 +6,14 @@ dotenv.config()
 import express from 'express'
 import jwt from 'jsonwebtoken';
 import redis from 'redis'
-import { nextTick } from 'process'
 
 const app = express()
 
 
-var rediscl = redis.createClient();
+var rediscl = redis.createClient({
+  host: 'redis-server',
+  port: 6379
+})
 
 rediscl.on("connect",  () => {
   console.log("Redis plugged in.");

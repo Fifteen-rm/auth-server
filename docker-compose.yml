@@ -1,15 +1,11 @@
 version: '3.1'
 services:
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  redis-server: 
+    image: redis
+
+  auth-app:
+    build: .
     ports:
      - "8080:8080"
-    volumes:
-     - .:/code
-     - /code/node_modules
-    depends_on:
-     - redis
-  redis:
-    image: redis:alpine
+  
+
