@@ -39,6 +39,7 @@ app.get('/', async (req, res) => {
 
 app.post('/token', async function(req, res) {
   const refreshToken = req.body.token
+  console.log(req.body.token)
   jwt.verify(refreshToken, process.env.SECRET_REFRESH_TOKEN, (err, user) => {
     if (err) 
       return res.sendStatus(403)
@@ -46,13 +47,16 @@ app.post('/token', async function(req, res) {
     const accessToken = generateAccessToken({ name: user.name })
 
     res.json({ accessToken: accessToken })
+    return res.sendStatus(200)
+    
   })
 })
 
 
 // TO DO : refactor using async await  | by kimkihyuk
 // TO DO : Implement black list | by kimkihyuk
-app.delete('/logout', (req, res) => {
+app.delete('/logout', (req, res) => { 
+  console.log('req.body.token is ',req.body.token)
   jwt.verify(req.body.token, process.env.SECRET_REFRESH_TOKEN, (err, user) => {
     console.log('[logout] user is ', user)
     if (err)
@@ -104,6 +108,7 @@ app.get('/authenticate', (req, res) => {
     if (err){
       return res.sendStatus(403);
     }
+    return res.sendStatus(200)
   })
 })
 
