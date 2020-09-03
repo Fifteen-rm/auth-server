@@ -6,6 +6,7 @@ dotenv.config()
 import express from 'express'
 import jwt from 'jsonwebtoken';
 import redis from 'redis'
+import { profile } from 'console'
 
 const app = express()
 
@@ -38,6 +39,7 @@ app.get('/', async (req, res) => {
 
 app.post('/token', async function(req, res) {
   const refreshToken = req.body.token
+  console.log(req.body.token)
   jwt.verify(refreshToken, process.env.SECRET_REFRESH_TOKEN, (err, user) => {
     if (err) 
       return res.sendStatus(403)
@@ -45,17 +47,21 @@ app.post('/token', async function(req, res) {
     const accessToken = generateAccessToken({ name: user.name })
 
     res.json({ accessToken: accessToken })
+    return res.sendStatus(200)
+    
   })
 })
 
 
 // TO DO : refactor using async await  | by kimkihyuk
 // TO DO : Implement black list | by kimkihyuk
-app.delete('/logout', (req, res) => {
+app.delete('/logout', (req, res) => { 
+  console.log('req.body.token is ',req.body.token)
   jwt.verify(req.body.token, process.env.SECRET_REFRESH_TOKEN, (err, user) => {
     console.log('[logout] user is ', user)
     if (err)
       return res.send(403, {response: `invalid token`})
+      
 
     rediscl.del(user.name, console.log)
 
@@ -66,7 +72,6 @@ app.delete('/logout', (req, res) => {
 app.post('/login', (req, res) => {
   const username = req.body.username
   const user = { name: username }
-
   if (!(profiles.some(profile => profile.username === user.name))) {
     return res.send(`there is no user ${user.name}`, 401) // refacotr as return res.status(status).send(body) 
   }
@@ -88,6 +93,26 @@ app.post('/login', (req, res) => {
 
   res.json({ accessToken: accessToken, refreshToken: refreshToken })
 })
+
+
+app.get('/authenticate', (req, res) => {
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+  console.log(token)
+  
+  if (token == null){
+    return res.sendStatus(401);
+  }
+  
+  jwt.verify(token, process.env.SECRET_ACCESS_TOKEN, (err, user) => {
+    if (err){
+      return res.sendStatus(403);
+    }
+    return res.sendStatus(200)
+  })
+})
+
+
 
 const generateAccessToken = (user) => {
   return jwt.sign(user, process.env.SECRET_ACCESS_TOKEN, { expiresIn: '12h' })
